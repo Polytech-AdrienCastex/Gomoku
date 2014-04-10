@@ -4,18 +4,16 @@
  * and open the template in the editor.
  */
 
-package gomoku;
+package exceptions;
 
 /**
  *
  * @author p1002239
  */
-class EmptyHistoryException extends Exception
+public class OutOfBoundException extends Exception
 {
-
-    public EmptyHistoryException()
+    public OutOfBoundException(String msg)
     {
-        super("L'historique est vide.");
+        super(msg);
     }
-    
 }

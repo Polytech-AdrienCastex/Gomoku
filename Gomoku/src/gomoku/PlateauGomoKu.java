@@ -6,6 +6,8 @@
 
 package gomoku;
 
+import exceptions.OutOfBoundException;
+
 /**
  *
  * @author p1002239

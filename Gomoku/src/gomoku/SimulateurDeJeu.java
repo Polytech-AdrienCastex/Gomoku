@@ -6,9 +6,16 @@
 
 package gomoku;
 
+import exceptions.EmptyHistoryException;
+import exceptions.InvalidPlayException;
+import exceptions.OutOfBoundException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import players.JoueurAleatoire;
+import players.JoueurHumain;
 
 /**
  *
@@ -20,14 +27,19 @@ public class SimulateurDeJeu
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws EmptyHistoryException
+    public static void main(String[] args) throws EmptyHistoryException, InvalidPlayException, Exception
     {
         try
         {
             
             
             PlateauGomoKu p = new PlateauGomoKu(6,7);
+            p.initialiser();
             System.out.println(p);
+            
+            SimulerJoueurs(p);
+            
+            /*
             System.out.println("Chargement d'une configuration initiale");
             ArrayList<Coup> positionInitiale = new ArrayList<Coup>();
             positionInitiale.add(new Coup(2, new Position(1,1)));
@@ -65,7 +77,7 @@ public class SimulateurDeJeu
             System.out.println(p.CheckLigneId(p3, 2, 4));
             System.out.println("Reinitialisation du plateau");
             p.initialiser();
-            System.out.println(p);
+            System.out.println(p);*/
             
             
             
@@ -81,6 +93,27 @@ public class SimulateurDeJeu
         catch (OutOfBoundException ex)
         {
             Logger.getLogger(SimulateurDeJeu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private static void SimulerJoueurs(PlateauGomoKu p) throws Exception
+    {
+        Coup c;
+        
+        JoueurHumain jh = new JoueurHumain(1);
+        JoueurAleatoire ja = new JoueurAleatoire(2);
+        
+        while(true)
+        {
+            System.out.println("Au joueur Aleatoire de jouer : ");
+            c = ja.genererCoup(p);
+            p.jouer(c);
+            System.out.println(p);
+
+            System.out.println("Au joueur Humain de jouer : ");
+            c = jh.genererCoup(p);
+            p.jouer(c);
+            System.out.println(p);
         }
     }
     

@@ -6,6 +6,9 @@
 
 package gomoku;
 
+import exceptions.OutOfBoundException;
+import exceptions.EmptyHistoryException;
+import exceptions.InvalidPlayException;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -33,6 +36,8 @@ public class Plateau
         longueur = _longueur;
         largeur = _largeur;
         
+        dernierId = 0;
+        
         etatPlateau = new int[longueur][largeur];
         coups = new Stack<>();
     }
@@ -47,24 +52,45 @@ public class Plateau
     {
         initialiser();
         
-        for(Coup c : listCoups)
-            etatPlateau[c.pos.x][c.pos.y] = c.id;
+        if(listCoups != null)
+            for(Coup c : listCoups)
+                etatPlateau[c.pos.x][c.pos.y] = c.id;
     }
     public void initialiser(Iterable<Coup> listCoups)
     {
         initialiser();
         
-        for(Coup c : listCoups)
-            etatPlateau[c.pos.x][c.pos.y] = c.id;
+        if(listCoups != null)
+            for(Coup c : listCoups)
+                etatPlateau[c.pos.x][c.pos.y] = c.id;
     }
     
-    public void jouer(Coup coup) throws OutOfBoundException
+    public void jouer(Coup coup) throws OutOfBoundException, InvalidPlayException
     {
         if(!isValidPosition(coup.pos))
             throw new OutOfBoundException("Le coup doit se trouver dans les limites du plateau.");
+        if(!isEmptyPosition(coup.pos))
+            throw new InvalidPlayException(coup);
+        
+        dernierId = coup.id;
         
         etatPlateau[coup.pos.x][coup.pos.y] = coup.id;
         coups.push(coup);
+    }
+    
+    public ArrayList<Coup> getSituation()
+    {
+        ArrayList<Coup> list = new ArrayList<>();
+        
+        Stack<Coup> coupsTemp = (Stack<Coup>)coups.clone();
+        
+        while(!coupsTemp.empty())
+        {
+            Coup coup = coupsTemp.pop();
+            list.add(new Coup(coup.id, new Position(coup.pos.x, coup.pos.y)));
+        }
+        
+        return list;
     }
     
     public ArrayList<Position> etatId(int id)
@@ -76,16 +102,9 @@ public class Plateau
         while(!coupsTemp.empty())
         {
             Coup coup = coupsTemp.pop();
-                if(etatPlateau[coup.pos.x][coup.pos.y] == id)
-                    list.add(new Position(coup.pos.x, coup.pos.y));
+            if(etatPlateau[coup.pos.x][coup.pos.y] == id)
+                list.add(new Position(coup.pos.x, coup.pos.y));
         }
-        
-        /*
-        for(int x = 0; x < largeur; x++)
-            for(int y = 0; y < largeur; y++)
-                if(etatPlateau[x][y] == id)
-                    list.add(new Position(x, y));
-        */
         
         return list;
     }
@@ -112,10 +131,39 @@ public class Plateau
         return largeur;
     }
     
-    protected boolean isValidPosition(Position pos)
+    public boolean isValidPosition(Position pos)
     {
-        return pos.x >= 0 && pos.x < longueur &&
-                pos.y >= 0 && pos.y < largeur;
+        return isValidPosition(pos.x, pos.y);
+    }
+    public boolean isValidPosition(int x, int y)
+    {
+        return x >= 0 && x < longueur &&
+                y >= 0 && y < largeur;
+    }
+    
+    public boolean isEmptyPosition(Position pos)
+    {
+        return isEmptyPosition(pos.x, pos.y);
+    }
+    public boolean isEmptyPosition(int x, int y)
+    {
+        return etatPlateau[x][y] == CASE_VIDE;
+    }
+    
+    public boolean isFull()
+    {
+        for(int y = 0; y < largeur; y++)
+            for(int x = 0; x < longueur; x++)
+                if(isEmptyPosition(x, y))
+                    return false; // Pleateau plein
+        return true; // Plateau non plein
+    }
+    
+    
+    private int dernierId;
+    public int getDernierId()
+    {
+        return dernierId;
     }
     
     @Override
