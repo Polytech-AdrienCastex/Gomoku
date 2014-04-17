@@ -6,12 +6,12 @@
 
 package gomoku;
 
-import exceptions.InvalidPlayException;
-import exceptions.OutOfBoundException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import jeugomoku.JeuDeGomokuFactory;
-import jeugomoku.JeuDeGomokuPlusFactory;
+import jeugomoku.plus.JeuDeGomokuPlusFactory;
+import jeugomoku.torique.plus.JeuDeGomokuPlusToriqueFactory;
+import jeugomoku.torique.JeuDeGomokuToriqueFactory;
 import jeugomoku.JeuDePlateau;
 import jeugomoku.JeuDePlateauFactory;
 import players.Joueur;
@@ -38,9 +38,11 @@ public class Menu implements Runnable
     private class Modes
     {
         public static final int GomokuStandard = 1;
-        public static final int GomokuPlus = 2;
+        public static final int GomokuStandard_Torique = 2;
+        public static final int GomokuPlus = 3;
+        public static final int GomokuPlus_Torique = 4;
         
-        public static final int MAX = 2;
+        public static final int MAX = 4;
     }
     
     private int mode;
@@ -66,7 +68,9 @@ public class Menu implements Runnable
         modes = new String[]
         {
             "Gomoku Standard",
-            "Gomoku +"
+            "Gomoku Standard Torique",
+            "Gomoku +",
+            "Gomoku + Torique"
         };
         
         mode = 1;
@@ -81,7 +85,6 @@ public class Menu implements Runnable
     public void run()
     {
         int selectedMenu;
-        boolean loop;
         
         do
         {
@@ -153,8 +156,16 @@ public class Menu implements Runnable
                             factory = new JeuDeGomokuFactory();
                             break;
                             
+                        case Modes.GomokuStandard_Torique:
+                            factory = new JeuDeGomokuToriqueFactory();
+                            break;
+                            
                         case Modes.GomokuPlus:
                             factory = new JeuDeGomokuPlusFactory();
+                            break;
+                            
+                        case Modes.GomokuPlus_Torique:
+                            factory = new JeuDeGomokuPlusToriqueFactory();
                             break;
                     }
                     break;

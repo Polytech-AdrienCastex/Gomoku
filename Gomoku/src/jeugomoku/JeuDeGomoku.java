@@ -9,16 +9,8 @@ package jeugomoku;
 import exceptions.InvalidPlayException;
 import exceptions.OutOfBoundException;
 import gomoku.Coup;
-import gomoku.Plateau;
 import gomoku.PlateauGomoKu;
 import gomoku.Position;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
-import java.util.SortedMap;
-import java.util.concurrent.ConcurrentSkipListMap;
 import players.Joueur;
 import players.JoueurHumain;
 
@@ -44,26 +36,19 @@ public class JeuDeGomoku extends JeuDePlateau
                 joueurCourant = joueurSuivant();
             int idToCheck = joueurCourant.getId();
             
-            try
-            {
-                for(int x = 0; x < plateau.getLongueur(); x++)
-                    for(int y = 0; y < plateau.getLargeur(); y++)
-                    {
-                        // Vérification des colonnes
-                        if(y <= plateau.getLargeur() - 5)
-                            if(pgk.CheckColonneId(new Position(x, y), 5, idToCheck))
-                                return true;
-                        
-                        // Vérification des lignes
-                        if(x <= plateau.getLongueur() - 5)
-                            if(pgk.CheckLigneId(new Position(x, y), 5, idToCheck))
-                                return true;
-                    }
-            }
-            catch(OutOfBoundException ex) // Erreur inattendue
-            {
-                throw ex;
-            }
+            for(int x = 0; x < plateau.getLongueur(); x++)
+                for(int y = 0; y < plateau.getLargeur(); y++)
+                {
+                    // Vérification des colonnes
+                    if(y <= plateau.getLargeur() - 5)
+                        if(pgk.CheckColonneId(new Position(x, y), 5, idToCheck))
+                            return true;
+
+                    // Vérification des lignes
+                    if(x <= plateau.getLongueur() - 5)
+                        if(pgk.CheckLigneId(new Position(x, y), 5, idToCheck))
+                            return true;
+                }
         }
         
         return false;
@@ -116,7 +101,6 @@ public class JeuDeGomoku extends JeuDePlateau
         }
         catch(InvalidPlayException ex) // Fin de partie : Match nul
         {
-            System.out.println(ex.getMessage());
             return null;
         }
         catch(OutOfBoundException ex) // Erreur inattendue

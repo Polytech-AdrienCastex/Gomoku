@@ -4,11 +4,15 @@
  * and open the template in the editor.
  */
 
-package jeugomoku;
+package jeugomoku.plus;
 
 import gomoku.Coup;
 import gomoku.PlateauGomoKu;
 import java.util.ArrayList;
+import jeugomoku.JeuDeGomokuFactory;
+import jeugomoku.JeuDePlateau;
+import players.JoueurHumain;
+import players.JoueurMonteCarlo;
 
 /**
  *
@@ -20,7 +24,7 @@ public class JeuDeGomokuPlusFactory extends JeuDeGomokuFactory
     protected JeuDePlateau CreerPartie(ArrayList<Coup> situation) throws Exception
     {
         JeuDePlateau jdp = new JeuDeGomokuPlus();
-        PlateauGomoKu pgk = new PlateauGomoKu(9, 9);
+        PlateauGomoKu pgk = new PlateauGomoKu();
         if(situation == null || situation.isEmpty())
             pgk.initialiser();
         else

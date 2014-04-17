@@ -8,15 +8,8 @@ package gomoku;
 
 import exceptions.EmptyHistoryException;
 import exceptions.InvalidPlayException;
-import exceptions.OutOfBoundException;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import jeugomoku.JeuDeGomokuFactory;
-import players.JoueurAleatoire;
-import players.JoueurHumain;
 
 /**
  *
@@ -28,15 +21,15 @@ public class SimulateurDeJeu
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws EmptyHistoryException, InvalidPlayException, Exception
+    public static void main(String[] args) throws Exception
     {
-        //new Menu().run();
-        SimulerJoueurs();
+        new Menu().run();
+        //SimulerJoueurs();
     }
     
     private static void SimulerJoueurs() throws Exception
     {
-        ArrayList<Coup> coups = new ArrayList<Coup>();
+        ArrayList<Coup> coups = new ArrayList<>();
         
         coups.add(new Coup(2, new Position(4, 3)));
         coups.add(new Coup(2, new Position(5, 3)));

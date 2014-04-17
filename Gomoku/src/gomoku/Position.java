@@ -55,6 +55,6 @@ public class Position
     @Override
     public int hashCode()
     {
-        return x * 10 + y;
+        return x * 100 + y;
     }
 }

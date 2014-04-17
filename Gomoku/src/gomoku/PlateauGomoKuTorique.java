@@ -12,31 +12,44 @@ import exceptions.OutOfBoundException;
  *
  * @author p1002239
  */
-public class PlateauGomoKu extends Plateau
+public class PlateauGomoKuTorique extends PlateauGomoKu
 {
-    public PlateauGomoKu() throws OutOfBoundException
+    public PlateauGomoKuTorique() throws OutOfBoundException
     {
-        super(9, 9);
+        super();
     }
     
+    @Override
     public boolean CheckLigneId(Position pos, int n, int id)
     {
-        int y = pos.y;
+        int y = getY(pos.y);
         
         for(int x = pos.x; x < pos.x + n; x++)
-            if(super.etatPlateau[x][y] != id)
+            if(super.etatPlateau[getX(x)][y] != id)
                 return false;
         
         return true;
     }
+    @Override
     public boolean CheckColonneId(Position pos, int n, int id)
     {
-        int x = pos.x;
+        int x = getX(pos.x);
         
         for(int y = pos.y; y < pos.y + n; y++)
-            if(super.etatPlateau[x][y] != id)
+            if(super.etatPlateau[x][getY(y)] != id)
                 return false;
         
         return true;
+    }
+    
+    private int getX(int x)
+    {
+        int len = etatPlateau.length;
+        return (x + len) % len;
+    }
+    private int getY(int y)
+    {
+        int len = etatPlateau[0].length;
+        return (y + len) % len;
     }
 }

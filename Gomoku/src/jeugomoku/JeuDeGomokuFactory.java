@@ -6,7 +6,6 @@
 
 package jeugomoku;
 
-import exceptions.OutOfBoundException;
 import gomoku.Coup;
 import gomoku.PlateauGomoKu;
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public class JeuDeGomokuFactory implements JeuDePlateauFactory
     protected JeuDePlateau CreerPartie(ArrayList<Coup> situation) throws Exception
     {
         JeuDePlateau jdp = new JeuDeGomoku();
-        PlateauGomoKu pgk = new PlateauGomoKu(9, 9);
+        PlateauGomoKu pgk = new PlateauGomoKu();
         if(situation == null || situation.isEmpty())
             pgk.initialiser();
         else
