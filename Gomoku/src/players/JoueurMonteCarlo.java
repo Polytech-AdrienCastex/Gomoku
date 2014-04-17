@@ -173,4 +173,10 @@ public class JoueurMonteCarlo extends Joueur
             }
         }
     }
+    
+    @Override
+    public String toString()
+    {
+        return "IA Monte Carlo n°" + getId();
+    }
 }

@@ -72,8 +72,8 @@ public class JeuDeGomoku extends JeuDePlateau
     @Override
     public Joueur jouerPartie() throws OutOfBoundException
     {
-        boolean showPlateau =   joueurs[0] instanceof JoueurHumain ||
-                                joueurs[1] instanceof JoueurHumain;
+        boolean showInformations =  joueurs[0] instanceof JoueurHumain ||
+                                    joueurs[1] instanceof JoueurHumain;
         
         try
         {
@@ -88,6 +88,11 @@ public class JeuDeGomoku extends JeuDePlateau
                 boolean ok;
                 do
                 {
+                    if(showInformations)
+                    {
+                        System.out.println(" ***************************");
+                        System.out.println("C'est au tour de " + joueurCourant + " de jouer :");
+                    }
                     c = joueurCourant.genererCoup(plateau);
 
                     if(coupValide(c))
@@ -102,7 +107,7 @@ public class JeuDeGomoku extends JeuDePlateau
                     }
                 } while(!ok);
                 
-                if(showPlateau)
+                if(showInformations)
                     System.out.println(this.plateau);
 
             } while(!partieTerminee());

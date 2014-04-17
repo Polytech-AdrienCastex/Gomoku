@@ -29,4 +29,10 @@ public abstract class Joueur
     }
     
     public abstract Coup genererCoup(Plateau etatJeu) throws InvalidPlayException;
+    
+    @Override
+    public String toString()
+    {
+        return "Joueur n°" + getId();
+    }
 }

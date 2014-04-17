@@ -209,8 +209,26 @@ public class Plateau
     {
         StringBuilder str = new StringBuilder();
         
+        str.append("  ");
+        for(int x = 0; x < longueur; x++)
+        {
+            if(x < 10)
+                str.append(" ");
+            str.append(x);
+        }
+        str.append(System.getProperty("line.separator"));
+        
+        str.append("  ");
+        for(int x = 0; x < longueur; x++)
+            str.append("--");
+        str.append(System.getProperty("line.separator"));
+        
         for(int y = 0; y < largeur; y++)
         {
+            if(y < 10)
+                str.append(" ");
+            str.append(y);
+            str.append("|");
             for(int x = 0; x < longueur; x++)
             {
                 str.append(etatPlateau[x][y]);

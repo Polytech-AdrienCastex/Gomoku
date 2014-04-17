@@ -37,4 +37,9 @@ public class JoueurAleatoire extends Joueur
         return new Coup(getId(), choix);
     }
     
+    @Override
+    public String toString()
+    {
+        return "IA Aleatoire n°" + getId();
+    }
 }

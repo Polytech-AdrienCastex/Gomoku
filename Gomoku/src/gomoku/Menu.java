@@ -11,7 +11,9 @@ import exceptions.OutOfBoundException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import jeugomoku.JeuDeGomokuFactory;
+import jeugomoku.JeuDeGomokuPlusFactory;
 import jeugomoku.JeuDePlateau;
+import jeugomoku.JeuDePlateauFactory;
 import players.Joueur;
 
 /**
@@ -22,15 +24,26 @@ public class Menu implements Runnable
 {
     private class Menus
     {
-        public static final int HvsH = 1;
-        public static final int HvsMC = 2;
-        public static final int HvsAl = 3;
-        public static final int AlvsAl = 4;
-        public static final int Test = 5;
-        public static final int Fermer = 6;
+        public static final int ChangerMode = 1;
+        public static final int HvsH = 2;
+        public static final int HvsMC = 3;
+        public static final int HvsAl = 4;
+        public static final int AlvsAl = 5;
+        public static final int Test = 6;
+        public static final int Fermer = 7;
         
-        public static final int MAX = 6;
+        public static final int MAX = 7;
     }
+    
+    private class Modes
+    {
+        public static final int GomokuStandard = 1;
+        public static final int GomokuPlus = 2;
+        
+        public static final int MAX = 2;
+    }
+    
+    private int mode;
     
     public Menu()
     {
@@ -38,6 +51,8 @@ public class Menu implements Runnable
         
         menus = new String[]
         {
+            "Changer de mode de jeu [%MODE%]",
+            
             big + "Humain vs Humain",
             big + "Humain vs IA Monte Carlo",
             big + "Humain vs IA Aléatoire",
@@ -47,42 +62,33 @@ public class Menu implements Runnable
             
             "Fermer"
         };
+        
+        modes = new String[]
+        {
+            "Gomoku Standard",
+            "Gomoku +"
+        };
+        
+        mode = 1;
+        factory = new JeuDeGomokuFactory();
     }
     
     private final String[] menus;
+    private final String[] modes;
+    private JeuDePlateauFactory factory;
 
     @Override
     public void run()
     {
-        Scanner scan = new Scanner(System.in);
-        
-        int selectedMenu = 0;
+        int selectedMenu;
         boolean loop;
         
         do
         {
             PrintTitle("GOMOKU");
-            for(int i = 0; i < menus.length; i++)
-                System.out.println((i + 1) + "/ " + menus[i]);
-
-            do
-            {
-                loop = true;
-                try
-                {
-                    System.out.print("Entrez le numéro du menu : ");
-                    selectedMenu = scan.nextInt();
-                    
-                    if(selectedMenu > 0 && selectedMenu <= Menus.MAX)
-                        loop = false;
-                    else
-                        System.out.println("Il faut entrer un numéro du menu!");
-                }
-                catch(InputMismatchException ex)
-                {
-                    System.out.println("Il faut entrer le numéro du menu!");
-                }
-            } while(loop);
+            afficherMenus(menus);
+            
+            selectedMenu = getValue(Menus.MAX);
 
             ExecuteMenu(selectedMenu);
         } while(selectedMenu != Menus.Fermer);
@@ -95,16 +101,68 @@ public class Menu implements Runnable
         System.out.println("    *********** " + value + " ***********");
     }
     
+    private void afficherMenus(String[] menus)
+    {
+        for(int i = 0; i < menus.length; i++)
+            System.out.println((i + 1) + "/ " + menus[i].
+                    replace("%MODE%", modes[mode - 1]));
+    }
+    private int getValue(int max)
+    {
+        Scanner scan = new Scanner(System.in);
+        
+        boolean loop;
+        int selectedValue = 1;
+        
+        do
+        {
+            loop = true;
+            try
+            {
+                System.out.print("Entrez le numéro : ");
+                selectedValue = scan.nextInt();
+
+                if(selectedValue > 0 && selectedValue <= Menus.MAX)
+                    loop = false;
+                else
+                    throw new InputMismatchException();
+            }
+            catch(InputMismatchException ex)
+            {
+                System.out.println("Il faut entrer un numéro compris entre 1 et " + max + "!");
+            }
+        } while(loop);
+        
+        return selectedValue;
+    }
+    
     private void ExecuteMenu(int selectedMenu)
     {
         try
         {
             switch(selectedMenu)
             {
+                case Menus.ChangerMode:
+                    PrintTitle("CHANGER DE MODE");
+                    System.out.println("Mode courrant : " + modes[mode - 1]);
+                    afficherMenus(modes);
+                    mode = getValue(Modes.MAX);
+                    switch(mode)
+                    {
+                        case Modes.GomokuStandard:
+                            factory = new JeuDeGomokuFactory();
+                            break;
+                            
+                        case Modes.GomokuPlus:
+                            factory = new JeuDeGomokuPlusFactory();
+                            break;
+                    }
+                    break;
+                
                 case Menus.AlvsAl:
                     PrintTitle("PARTIE IA VS IA");
                     AfficherJoueurVainqueur(
-                            new JeuDeGomokuFactory().
+                            factory.
                                     CreerPartieAleatoireVSAleatoire(null).
                                     jouerPartie());
                     break;
@@ -112,7 +170,7 @@ public class Menu implements Runnable
                 case Menus.HvsMC:
                     PrintTitle("PARTIE Humain VS IA Monte Carlo");
                     AfficherJoueurVainqueur(
-                            new JeuDeGomokuFactory().
+                            factory.
                                     CreerPartieHumainVSMonteCarlo(null).
                                     jouerPartie());
                     break;
@@ -120,7 +178,7 @@ public class Menu implements Runnable
                 case Menus.HvsAl:
                     PrintTitle("PARTIE Humain VS IA");
                     AfficherJoueurVainqueur(
-                            new JeuDeGomokuFactory().
+                            factory.
                                     CreerPartieHumainVSAleatoire(null).
                                     jouerPartie());
                     break;
@@ -128,7 +186,7 @@ public class Menu implements Runnable
                 case Menus.HvsH:
                     PrintTitle("PARTIE Humain VS Humain");
                     AfficherJoueurVainqueur(
-                            new JeuDeGomokuFactory().
+                            factory.
                                     CreerPartieHumainVSHumain(null).
                                     jouerPartie());
                     break;

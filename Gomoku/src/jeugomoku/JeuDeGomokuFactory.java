@@ -22,23 +22,16 @@ public class JeuDeGomokuFactory implements JeuDePlateauFactory
 {
     protected JeuDePlateau CreerPartie(ArrayList<Coup> situation) throws Exception
     {
-        try
-        {
-            JeuDePlateau jdp = new JeuDeGomoku();
-            PlateauGomoKu pgk = new PlateauGomoKu(9, 9);
-            if(situation == null || situation.isEmpty())
-                pgk.initialiser();
-            else
-                pgk.initialiser(situation);
-            
-            jdp.setPlateau(pgk);
-            
-            return jdp;
-        }
-        catch (OutOfBoundException ex) // Erreur inattendue
-        {
-            throw new Exception(ex);
-        }
+        JeuDePlateau jdp = new JeuDeGomoku();
+        PlateauGomoKu pgk = new PlateauGomoKu(9, 9);
+        if(situation == null || situation.isEmpty())
+            pgk.initialiser();
+        else
+            pgk.initialiser(situation);
+
+        jdp.setPlateau(pgk);
+
+        return jdp;
     }
     
     @Override

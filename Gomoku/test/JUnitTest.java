@@ -158,7 +158,7 @@ public class JUnitTest {
             pgk.jouer(c);
             
             JeuDeGomoku jdg = new JeuDeGomoku();
-            jdg.setJoueur(1, jmc);
+            jdg.setJoueur(2, jmc);
             jdg.setPlateau(pgk);
             
             assertTrue(jdg.partieTerminee());
