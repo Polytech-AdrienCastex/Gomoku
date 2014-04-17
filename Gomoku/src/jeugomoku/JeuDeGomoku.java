@@ -20,6 +20,7 @@ import java.util.Queue;
 import java.util.SortedMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import players.Joueur;
+import players.JoueurHumain;
 
 /**
  *
@@ -39,19 +40,23 @@ public class JeuDeGomoku extends JeuDePlateau
         { // Plateau GomoKu
             PlateauGomoKu pgk = (PlateauGomoKu)plateau;
             
+            int idToCheck = joueurCourant.getId();
+            
             try
             {
-                // Vérification des colonnes
                 for(int x = 0; x < plateau.getLongueur(); x++)
-                    for(int y = 0; y < plateau.getLargeur() - 4; y++)
-                        if(pgk.CheckColonneId(new Position(x, y), 5, joueurCourant.getId()))
-                            return true;
-                
-                // Vérification des lignes
-                for(int y = 0; y < plateau.getLargeur(); y++)
-                    for(int x = 0; x < plateau.getLongueur() - 4; x++)
-                        if(pgk.CheckLigneId(new Position(x, y), 5, joueurCourant.getId()))
-                            return true;
+                    for(int y = 0; y < plateau.getLargeur(); y++)
+                    {
+                        // Vérification des colonnes
+                        if(y < plateau.getLargeur() - 5)
+                            if(pgk.CheckColonneId(new Position(x, y), 5, idToCheck))
+                                return true;
+                        
+                        // Vérification des lignes
+                        if(x < plateau.getLongueur() - 5)
+                            if(pgk.CheckLigneId(new Position(x, y), 5, idToCheck))
+                                return true;
+                    }
             }
             catch(OutOfBoundException ex) // Erreur inattendue
             {
@@ -65,6 +70,9 @@ public class JeuDeGomoku extends JeuDePlateau
     @Override
     public Joueur jouerPartie() throws OutOfBoundException
     {
+        boolean showPlateau =   joueurs[0] instanceof JoueurHumain ||
+                                joueurs[1] instanceof JoueurHumain;
+        
         try
         {
             Coup c;
@@ -90,6 +98,9 @@ public class JeuDeGomoku extends JeuDePlateau
                         ok = false;
                     }
                 } while(!ok);
+                
+                if(showPlateau)
+                    System.out.println(this.plateau);
 
             } while(!partieTerminee());
 
@@ -102,7 +113,7 @@ public class JeuDeGomoku extends JeuDePlateau
         }
         catch(OutOfBoundException ex) // Erreur inattendue
         {
-            // - Coup joué en dehors du plateau
+            // - Coup joué en dehors du plateau et non geré
             // - Incapacité à vérifier si la partie est terminée
             
             throw ex;

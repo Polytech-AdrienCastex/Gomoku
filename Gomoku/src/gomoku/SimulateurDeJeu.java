@@ -14,6 +14,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jeugomoku.JeuDeGomokuFactory;
 import players.JoueurAleatoire;
 import players.JoueurHumain;
 
@@ -29,15 +30,15 @@ public class SimulateurDeJeu
      */
     public static void main(String[] args) throws EmptyHistoryException, InvalidPlayException, Exception
     {
+            SimulerJoueurs();
+            /*
         try
         {
-            
             
             PlateauGomoKu p = new PlateauGomoKu(6,7);
             p.initialiser();
             System.out.println(p);
-            
-            SimulerJoueurs(p);
+            */
             
             /*
             System.out.println("Chargement d'une configuration initiale");
@@ -88,33 +89,28 @@ public class SimulateurDeJeu
             Coup c = new Coup(2, new Position(1, 0));
             plateau.jouer(c);
             
-            System.out.println(plateau);*/
+            System.out.println(plateau);*//*
         }
         catch (OutOfBoundException ex)
         {
             Logger.getLogger(SimulateurDeJeu.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
     }
     
-    private static void SimulerJoueurs(PlateauGomoKu p) throws Exception
+    private static void SimulerJoueurs() throws Exception
     {
-        Coup c;
+        ArrayList<Coup> coups = new ArrayList<Coup>();
         
-        JoueurHumain jh = new JoueurHumain(1);
-        JoueurAleatoire ja = new JoueurAleatoire(2);
+        coups.add(new Coup(2, new Position(4, 3)));
+        coups.add(new Coup(2, new Position(5, 3)));
+        coups.add(new Coup(2, new Position(6, 3)));
+        coups.add(new Coup(2, new Position(7, 3)));
+        coups.add(new Coup(1, new Position(2, 0)));
+        coups.add(new Coup(1, new Position(2, 1)));
+        coups.add(new Coup(1, new Position(5, 2)));
+        coups.add(new Coup(1, new Position(2, 5)));
         
-        while(true)
-        {
-            System.out.println("Au joueur Aleatoire de jouer : ");
-            c = ja.genererCoup(p);
-            p.jouer(c);
-            System.out.println(p);
-
-            System.out.println("Au joueur Humain de jouer : ");
-            c = jh.genererCoup(p);
-            p.jouer(c);
-            System.out.println(p);
-        }
+        new JeuDeGomokuFactory().CreerPartieHumainVSMonteCarlo(coups).jouerPartie();
     }
     
 }

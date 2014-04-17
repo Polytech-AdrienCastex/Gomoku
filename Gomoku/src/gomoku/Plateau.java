@@ -6,10 +6,11 @@
 
 package gomoku;
 
-import exceptions.OutOfBoundException;
 import exceptions.EmptyHistoryException;
 import exceptions.InvalidPlayException;
+import exceptions.OutOfBoundException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Stack;
 
 /**
@@ -24,6 +25,7 @@ public class Plateau
     protected final int largeur;
     protected int[][] etatPlateau;
     
+    private HashSet coupsLibres;
     private Stack<Coup> coups;
     
     public Plateau(int _longueur, int _largeur) throws OutOfBoundException
@@ -36,25 +38,38 @@ public class Plateau
         longueur = _longueur;
         largeur = _largeur;
         
-        dernierId = 0;
+        dernierId = 1;
         
         etatPlateau = new int[longueur][largeur];
         coups = new Stack<>();
+        coupsLibres = new HashSet();
     }
     
     public void initialiser()
     {
         for(int x = 0; x < longueur; x++)
             for(int y = 0; y < largeur; y++)
+            {
                 etatPlateau[x][y] = CASE_VIDE;
+                coupsLibres.add(new Position(x, y));
+            }
     }
     public void initialiser(Coup[] listCoups)
     {
         initialiser();
         
         if(listCoups != null)
+        {
             for(Coup c : listCoups)
+            {
                 etatPlateau[c.pos.x][c.pos.y] = c.id;
+                coups.push(c);
+                coupsLibres.remove(c.pos);
+            }
+        
+            if(listCoups.length > 0)
+                dernierId = listCoups[listCoups.length - 1].id;
+        }
     }
     public void initialiser(Iterable<Coup> listCoups)
     {
@@ -62,7 +77,12 @@ public class Plateau
         
         if(listCoups != null)
             for(Coup c : listCoups)
-                etatPlateau[c.pos.x][c.pos.y] = c.id;
+            {
+                dernierId = c.id;
+                etatPlateau[c.pos.x][c.pos.y] = dernierId;
+                coups.push(c);
+                coupsLibres.remove(c.pos);
+            }
     }
     
     public void jouer(Coup coup) throws OutOfBoundException, InvalidPlayException
@@ -74,21 +94,26 @@ public class Plateau
         
         dernierId = coup.id;
         
-        etatPlateau[coup.pos.x][coup.pos.y] = coup.id;
+        etatPlateau[coup.pos.x][coup.pos.y] = dernierId;
         coups.push(coup);
+        coupsLibres.remove(coup.pos);
     }
     
     public ArrayList<Coup> getSituation()
     {
         ArrayList<Coup> list = new ArrayList<>();
         
+        for(Coup c : coups)
+            list.add(c.Clone());
+        
+        /*
         Stack<Coup> coupsTemp = (Stack<Coup>)coups.clone();
         
         while(!coupsTemp.empty())
         {
             Coup coup = coupsTemp.pop();
-            list.add(new Coup(coup.id, new Position(coup.pos.x, coup.pos.y)));
-        }
+            list.add(coup.Clone());
+        }*/
         
         return list;
     }
@@ -97,13 +122,25 @@ public class Plateau
     {
         ArrayList<Position> list = new ArrayList<>();
         
-        Stack<Coup> coupsTemp = (Stack<Coup>)coups.clone();
-        
-        while(!coupsTemp.empty())
+        if(id == 0)
         {
-            Coup coup = coupsTemp.pop();
-            if(etatPlateau[coup.pos.x][coup.pos.y] == id)
-                list.add(new Position(coup.pos.x, coup.pos.y));
+            /*
+            for(int y = 0; y < largeur; y++)
+                for(int x = 0; x < longueur; x++)
+                    if(isEmptyPosition(x, y))
+                        list.add(new Position(x, y));*/
+            list = new ArrayList<>(coupsLibres);
+        }
+        else
+        {
+            Stack<Coup> coupsTemp = (Stack<Coup>)coups.clone();
+
+            while(!coupsTemp.empty())
+            {
+                Coup coup = coupsTemp.pop();
+                if(etatPlateau[coup.pos.x][coup.pos.y] == id)
+                    list.add(new Position(coup.pos.x, coup.pos.y));
+            }
         }
         
         return list;
@@ -164,6 +201,21 @@ public class Plateau
     public int getDernierId()
     {
         return dernierId;
+    }
+    
+    public Plateau Clone()
+    {
+        Plateau plateau = null;
+        
+        try
+        {
+            plateau = new Plateau(this.getLongueur(), this.getLargeur());
+            plateau.initialiser((Iterable<Coup>)coups.clone());
+        }
+        catch(OutOfBoundException ex)
+        { }
+        
+        return plateau;
     }
     
     @Override

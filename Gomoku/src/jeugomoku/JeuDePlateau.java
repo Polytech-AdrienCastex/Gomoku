@@ -39,6 +39,9 @@ public abstract class JeuDePlateau
             joueurs[ordre - 1] = joueur;
         else
             throw new OutOfBoundException("L'ordre du joueur doit être soit 1, soit 2 (ici ordre=" + ordre + ").");
+        
+        if(joueurCourant == null && ordre == 1)
+            joueurCourant = joueurs[0];
     }
     
     public void setPlateau(Plateau plateau)

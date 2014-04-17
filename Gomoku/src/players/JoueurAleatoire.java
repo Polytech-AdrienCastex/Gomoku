@@ -10,6 +10,7 @@ import exceptions.InvalidPlayException;
 import gomoku.Coup;
 import gomoku.Plateau;
 import gomoku.Position;
+import java.util.ArrayList;
 
 /**
  *
@@ -25,21 +26,15 @@ public class JoueurAleatoire extends Joueur
     @Override
     public Coup genererCoup(Plateau etatJeu) throws InvalidPlayException
     {
-        if(etatJeu.isFull())
+        ArrayList<Position> choix_possibles = etatJeu.etatId(0);
+        
+        if(choix_possibles.isEmpty())
             throw new InvalidPlayException("Le plateau est plein.");
         
-        int x, y;
-        Position pos;
+        int index = Utilitaire.monRandom(0, choix_possibles.size());
+        Position choix = choix_possibles.get(index);
         
-        do
-        {
-            x = Utilitaire.monRandom(0, etatJeu.getLongueur() - 1);
-            y = Utilitaire.monRandom(0, etatJeu.getLargeur() - 1);
-
-            pos = new Position(x, y);
-        } while(!etatJeu.isEmptyPosition(pos));
-        
-        return new Coup(getId(), pos);
+        return new Coup(getId(), choix);
     }
     
 }

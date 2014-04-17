@@ -12,6 +12,7 @@ import gomoku.PlateauGomoKu;
 import java.util.ArrayList;
 import players.JoueurAleatoire;
 import players.JoueurHumain;
+import players.JoueurMonteCarlo;
 
 /**
  *
@@ -25,7 +26,12 @@ public class JeuDeGomokuFactory implements JeuDePlateauFactory
         {
             JeuDePlateau jdp = new JeuDeGomoku();
             PlateauGomoKu pgk = new PlateauGomoKu(9, 9);
-            pgk.initialiser(situation);
+            if(situation == null || situation.isEmpty())
+                pgk.initialiser();
+            else
+                pgk.initialiser(situation);
+            
+            jdp.setPlateau(pgk);
             
             return jdp;
         }
@@ -64,6 +70,17 @@ public class JeuDeGomokuFactory implements JeuDePlateauFactory
 
         jdp.setJoueur(1, new JoueurAleatoire(1));
         jdp.setJoueur(2, new JoueurAleatoire(2));
+
+        return jdp;
+    }
+    
+    @Override
+    public JeuDePlateau CreerPartieHumainVSMonteCarlo(ArrayList<Coup> situation) throws Exception
+    {
+        JeuDePlateau jdp = CreerPartie(situation);
+
+        jdp.setJoueur(1, new JoueurHumain(1));
+        jdp.setJoueur(2, new JoueurMonteCarlo(2, 1000, this));
 
         return jdp;
     }

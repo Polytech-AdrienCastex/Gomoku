@@ -18,4 +18,5 @@ public interface JeuDePlateauFactory
     public JeuDePlateau CreerPartieHumainVSHumain(ArrayList<Coup> situation) throws Exception;
     public JeuDePlateau CreerPartieHumainVSAleatoire(ArrayList<Coup> situation) throws Exception;
     public JeuDePlateau CreerPartieAleatoireVSAleatoire(ArrayList<Coup> situation) throws Exception;
+    public JeuDePlateau CreerPartieHumainVSMonteCarlo(ArrayList<Coup> situation) throws Exception;
 }

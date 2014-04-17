@@ -21,6 +21,11 @@ public class Coup
         this.pos = _pos;
     }
     
+    public Coup Clone()
+    {
+        return new Coup(this.id, this.pos.Clone());
+    }
+    
     @Override
     public String toString()
     {
