@@ -106,15 +106,6 @@ public class Plateau
         for(Coup c : coups)
             list.add(c.Clone());
         
-        /*
-        Stack<Coup> coupsTemp = (Stack<Coup>)coups.clone();
-        
-        while(!coupsTemp.empty())
-        {
-            Coup coup = coupsTemp.pop();
-            list.add(coup.Clone());
-        }*/
-        
         return list;
     }
     
@@ -124,11 +115,6 @@ public class Plateau
         
         if(id == 0)
         {
-            /*
-            for(int y = 0; y < largeur; y++)
-                for(int x = 0; x < longueur; x++)
-                    if(isEmptyPosition(x, y))
-                        list.add(new Position(x, y));*/
             list = new ArrayList<>(coupsLibres);
         }
         else

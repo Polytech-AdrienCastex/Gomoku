@@ -39,9 +39,9 @@ public abstract class JeuDePlateau
             joueurs[ordre - 1] = joueur;
         else
             throw new OutOfBoundException("L'ordre du joueur doit être soit 1, soit 2 (ici ordre=" + ordre + ").");
-        
-        if(joueurCourant == null && ordre == 1)
-            joueurCourant = joueurs[0];
+        /*
+        if(joueurCourant == null && ordre == 2)
+            joueurCourant = joueurs[1];*/
     }
     
     public void setPlateau(Plateau plateau)
@@ -76,4 +76,10 @@ public abstract class JeuDePlateau
     
     public abstract boolean partieTerminee() throws OutOfBoundException;
     public abstract Joueur jouerPartie() throws OutOfBoundException;
+    
+    @Override
+    public String toString()
+    {
+        return plateau.toString();
+    }
 }

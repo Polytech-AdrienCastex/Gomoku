@@ -25,11 +25,6 @@ public class PlateauGomoKu extends Plateau
     
     public boolean CheckLigneId(Position pos, int n, int id) throws OutOfBoundException
     {
-        if(!super.isValidPosition(pos))
-            throw new OutOfBoundException("La position doit se trouver dans les limites du plateau.");
-        if(!super.isValidPosition(new Position(pos.x + n, pos.y)))
-            throw new OutOfBoundException("La position finale doit se trouver dans les limites du plateau.");
-        
         int y = pos.y;
         
         for(int x = pos.x; x < pos.x + n; x++)
@@ -40,11 +35,6 @@ public class PlateauGomoKu extends Plateau
     }
     public boolean CheckColonneId(Position pos, int n, int id) throws OutOfBoundException
     {
-        if(!super.isValidPosition(pos))
-            throw new OutOfBoundException("La position doit se trouver dans les limites du plateau.");
-        if(!super.isValidPosition(new Position(pos.x, pos.y + n)))
-            throw new OutOfBoundException("La position finale doit se trouver dans les limites du plateau.");
-        
         int x = pos.x;
         
         for(int y = pos.y; y < pos.y + n; y++)

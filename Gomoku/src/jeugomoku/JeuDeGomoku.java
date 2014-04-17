@@ -40,6 +40,8 @@ public class JeuDeGomoku extends JeuDePlateau
         { // Plateau GomoKu
             PlateauGomoKu pgk = (PlateauGomoKu)plateau;
             
+            if(joueurCourant == null)
+                joueurCourant = joueurSuivant();
             int idToCheck = joueurCourant.getId();
             
             try
@@ -48,12 +50,12 @@ public class JeuDeGomoku extends JeuDePlateau
                     for(int y = 0; y < plateau.getLargeur(); y++)
                     {
                         // Vérification des colonnes
-                        if(y < plateau.getLargeur() - 5)
+                        if(y <= plateau.getLargeur() - 5)
                             if(pgk.CheckColonneId(new Position(x, y), 5, idToCheck))
                                 return true;
                         
                         // Vérification des lignes
-                        if(x < plateau.getLongueur() - 5)
+                        if(x <= plateau.getLongueur() - 5)
                             if(pgk.CheckLigneId(new Position(x, y), 5, idToCheck))
                                 return true;
                     }
@@ -83,7 +85,7 @@ public class JeuDeGomoku extends JeuDePlateau
                 
                 joueurCourant = joueurSuivant();
 
-                boolean ok = true;
+                boolean ok;
                 do
                 {
                     c = joueurCourant.genererCoup(plateau);
@@ -91,6 +93,7 @@ public class JeuDeGomoku extends JeuDePlateau
                     if(coupValide(c))
                     {
                         plateau.jouer(c);
+                        ok = true;
                     }
                     else
                     {

@@ -10,6 +10,7 @@ import gomoku.PlateauGomoKu;
 import gomoku.Position;
 import java.util.ArrayList;
 import jeugomoku.JeuDeGomoku;
+
 import jeugomoku.JeuDeGomokuFactory;
 import org.junit.After;
 import org.junit.AfterClass;
