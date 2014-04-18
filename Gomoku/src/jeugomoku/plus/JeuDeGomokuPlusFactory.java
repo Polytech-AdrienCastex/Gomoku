@@ -11,8 +11,6 @@ import gomoku.PlateauGomoKu;
 import java.util.ArrayList;
 import jeugomoku.JeuDeGomokuFactory;
 import jeugomoku.JeuDePlateau;
-import players.JoueurHumain;
-import players.JoueurMonteCarlo;
 
 /**
  *

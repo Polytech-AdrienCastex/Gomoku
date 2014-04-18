@@ -6,14 +6,10 @@
 
 package jeugomoku.torique;
 
-import exceptions.InvalidPlayException;
 import exceptions.OutOfBoundException;
-import gomoku.Coup;
 import gomoku.PlateauGomoKu;
 import gomoku.Position;
 import jeugomoku.JeuDeGomoku;
-import players.Joueur;
-import players.JoueurHumain;
 
 /**
  *

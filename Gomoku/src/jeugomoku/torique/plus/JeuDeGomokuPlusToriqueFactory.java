@@ -7,13 +7,10 @@
 package jeugomoku.torique.plus;
 
 import gomoku.Coup;
-import gomoku.PlateauGomoKu;
 import gomoku.PlateauGomoKuTorique;
 import java.util.ArrayList;
 import jeugomoku.JeuDeGomokuFactory;
 import jeugomoku.JeuDePlateau;
-import players.JoueurHumain;
-import players.JoueurMonteCarlo;
 
 /**
  *

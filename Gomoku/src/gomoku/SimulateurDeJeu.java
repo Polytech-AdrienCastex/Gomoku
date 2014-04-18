@@ -6,8 +6,6 @@
 
 package gomoku;
 
-import exceptions.EmptyHistoryException;
-import exceptions.InvalidPlayException;
 import java.util.ArrayList;
 import jeugomoku.JeuDeGomokuFactory;
 
@@ -23,8 +21,8 @@ public class SimulateurDeJeu
      */
     public static void main(String[] args) throws Exception
     {
-        new Menu().run();
-        //SimulerJoueurs();
+        //new Menu().run(); // Lancer l'execution du menu, et donc du jeu
+        SimulerJoueurs(); // Test avec le plateau de test
     }
     
     private static void SimulerJoueurs() throws Exception
@@ -40,7 +38,10 @@ public class SimulateurDeJeu
         coups.add(new Coup(1, new Position(5, 2)));
         coups.add(new Coup(1, new Position(2, 5)));
         
+        long startTime = System.nanoTime();
         new JeuDeGomokuFactory().CreerPartieHumainVSMonteCarlo(coups).jouerPartie();
+        long savedTime = (System.nanoTime() - startTime) / 1000000; // en ms
+        System.out.println("2eme avec 8 pions deja placés : " + savedTime + "ms");
     }
     
 }

@@ -4,13 +4,14 @@
  * and open the template in the editor.
  */
 
-package jeugomoku;
+package jeugomoku.torique;
 
 import exceptions.OutOfBoundException;
 import gomoku.Coup;
-import gomoku.PlateauGomoKu;
+import gomoku.PlateauGomoKuTorique;
 import gomoku.Position;
 import java.util.ArrayList;
+import jeugomoku.torique.JeuDeGomokuTorique;
 import static org.junit.Assert.fail;
 import org.junit.Test;
 import players.Joueur;
@@ -20,87 +21,15 @@ import players.JoueurAleatoire;
  *
  * @author Adrien
  */
-public class JeuDeGomokuTest {
+public class JeuDeGomokuToriqueTest {
     
-    public JeuDeGomokuTest() {
-    }
-    
-    @Test
-    public void testSetJoueur_Ordre()
-    {
-        JeuDeGomoku jdg = new JeuDeGomoku();
-        Joueur joueur = new JoueurAleatoire(1);
-        
-        try
-        {
-            jdg.setJoueur(0, joueur);
-            fail("0 ne doit pas être accepté par setJoueur!");
-        }
-        catch (OutOfBoundException ex)
-        { }
-        
-        try
-        {
-            jdg.setJoueur(-1, joueur);
-            fail("-1 ne doit pas être accepté par setJoueur!");
-        }
-        catch (OutOfBoundException ex)
-        { }
-        
-        try
-        {
-            jdg.setJoueur(3, joueur);
-            fail("3 ne doit pas être accepté par setJoueur!");
-        }
-        catch (OutOfBoundException ex)
-        { }
-        
-        try
-        {
-            jdg.setJoueur(1, joueur);
-        }
-        catch (OutOfBoundException ex)
-        {
-            fail("1 doit être accepté par setJoueur!");
-        }
-        
-        try
-        {
-            jdg.setJoueur(2, joueur);
-        }
-        catch (OutOfBoundException ex)
-        {
-            fail("2 doit être accepté par setJoueur!");
-        }
+    public JeuDeGomokuToriqueTest() {
     }
 
     @Test
-    public void testJouerPartie() throws OutOfBoundException
-    {
-        JeuDeGomoku jdg = new JeuDeGomoku();
-        
-        Joueur j1 = new JoueurAleatoire(1);
-        Joueur j2 = new JoueurAleatoire(2);
-        jdg.setJoueur(1, j1);
-        jdg.setJoueur(2, j2);
-        
-        PlateauGomoKu pgk = new PlateauGomoKu();
-        pgk.initialiser();
-        jdg.setPlateau(pgk);
-        
-        Joueur joueurVainqueur = jdg.jouerPartie();
-        
-        if(joueurVainqueur != null && joueurVainqueur != j1 && joueurVainqueur != j2)
-        {
-            System.out.println(pgk);
-            fail("Le joueur retourné ne correspond à aucun joueur!");
-        }
-    }
-    
-    @Test
     public void testPartieTerminee() throws OutOfBoundException
     {
-        JeuDeGomoku jdg = new JeuDeGomoku();
+        JeuDeGomokuTorique jdg = new JeuDeGomokuTorique();
         
         Joueur j1 = new JoueurAleatoire(1);
         Joueur j2 = new JoueurAleatoire(2);
@@ -108,14 +37,14 @@ public class JeuDeGomokuTest {
         jdg.setJoueur(2, j2);
         
         ArrayList<Coup> coups = new ArrayList<>();
+        coups.add(new Coup(1, new Position(7, 0)));
+        coups.add(new Coup(1, new Position(8, 0)));
         coups.add(new Coup(1, new Position(0, 0)));
         coups.add(new Coup(1, new Position(1, 0)));
         coups.add(new Coup(1, new Position(2, 0)));
-        coups.add(new Coup(1, new Position(3, 0)));
-        coups.add(new Coup(1, new Position(4, 0)));
         coups.add(new Coup(2, new Position(5, 5)));
         
-        PlateauGomoKu pgk = new PlateauGomoKu();
+        PlateauGomoKuTorique pgk = new PlateauGomoKuTorique();
         pgk.initialiser(coups);
         jdg.setPlateau(pgk);
         
@@ -127,11 +56,11 @@ public class JeuDeGomokuTest {
         }
         
         coups.clear();
+        coups.add(new Coup(2, new Position(7, 0)));
+        coups.add(new Coup(2, new Position(8, 0)));
         coups.add(new Coup(2, new Position(0, 0)));
         coups.add(new Coup(2, new Position(1, 0)));
         coups.add(new Coup(2, new Position(2, 0)));
-        coups.add(new Coup(2, new Position(3, 0)));
-        coups.add(new Coup(2, new Position(4, 0)));
         coups.add(new Coup(1, new Position(5, 5)));
         pgk.initialiser(coups);
         
