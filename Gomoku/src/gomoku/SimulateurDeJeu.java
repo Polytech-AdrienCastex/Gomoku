@@ -41,7 +41,7 @@ public class SimulateurDeJeu
         long startTime = System.nanoTime();
         new JeuDeGomokuFactory().CreerPartieHumainVSMonteCarlo(coups).jouerPartie();
         long savedTime = (System.nanoTime() - startTime) / 1000000; // en ms
-        System.out.println("2eme avec 8 pions deja placés : " + savedTime + "ms");
+        System.out.println("Temps total de l'execution : " + savedTime + "ms");
     }
     
 }

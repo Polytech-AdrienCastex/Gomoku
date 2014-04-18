@@ -64,9 +64,11 @@ public class PositionTest {
     public void testHashCode() {
         System.out.println("hashCode");
         Position instance = new Position(5, 3);
-        int expResult = 5 * 100 + 3;
+        int expResult = (5 << 8) + 3;
         int result = instance.hashCode();
         assertEquals(expResult, result);
+        System.out.println("x = " + (result >> 8));
+        System.out.println("y = " + (result & 0xFF));
     }
     
 }

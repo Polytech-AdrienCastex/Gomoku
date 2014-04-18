@@ -25,7 +25,7 @@ public class Plateau
     protected final int largeur;
     protected int[][] etatPlateau;
     
-    private HashSet coupsLibres;
+    private HashSet positionsLibres;
     private Stack<Coup> coups;
     
     public Plateau(int _longueur, int _largeur) throws OutOfBoundException
@@ -42,7 +42,7 @@ public class Plateau
         
         etatPlateau = new int[longueur][largeur];
         coups = new Stack<>();
-        coupsLibres = new HashSet();
+        positionsLibres = new HashSet();
     }
     
     public void initialiser()
@@ -51,7 +51,7 @@ public class Plateau
             for(int y = 0; y < largeur; y++)
             {
                 etatPlateau[x][y] = CASE_VIDE;
-                coupsLibres.add(new Position(x, y));
+                positionsLibres.add(new Position(x, y));
             }
     }
     public void initialiser(Coup[] listCoups)
@@ -64,7 +64,7 @@ public class Plateau
             {
                 etatPlateau[c.pos.x][c.pos.y] = c.id;
                 coups.push(c);
-                coupsLibres.remove(c.pos);
+                positionsLibres.remove(c.pos);
             }
         
             if(listCoups.length > 0)
@@ -81,7 +81,7 @@ public class Plateau
                 dernierId = c.id;
                 etatPlateau[c.pos.x][c.pos.y] = dernierId;
                 coups.push(c);
-                coupsLibres.remove(c.pos);
+                positionsLibres.remove(c.pos);
             }
     }
     
@@ -96,7 +96,7 @@ public class Plateau
         
         etatPlateau[coup.pos.x][coup.pos.y] = dernierId;
         coups.push(coup);
-        coupsLibres.remove(coup.pos);
+        positionsLibres.remove(coup.pos);
     }
     
     public ArrayList<Coup> getSituation()
@@ -115,7 +115,7 @@ public class Plateau
         
         if(id == 0)
         {
-            list = new ArrayList<>(coupsLibres);
+            list = new ArrayList<>(positionsLibres);
         }
         else
         {
@@ -140,6 +140,7 @@ public class Plateau
         Coup lastCoup = coups.pop();
         
         etatPlateau[lastCoup.pos.x][lastCoup.pos.y] = CASE_VIDE;
+        positionsLibres.add(new Position(lastCoup.pos.x, lastCoup.pos.y));
         
         return lastCoup;
     }
